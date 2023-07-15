@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const User = require('./models/user.model');
 const mongoose = require('mongoose');
+const Task=require('./Taskmodel.js');
 
 
 
@@ -94,6 +95,21 @@ mongoose.connect('mongodb://127.0.0.1:27017/myap', {
         res.status(500).json({ error: 'Internal Server Error' });
       }
     });
+    app.get('/api/tasks', async (req, res) => {
+      try {
+        console.log("entered into function")
+        // Fetch all tasks from the database
+        const tasks = await Task.find();
+        console.log(tasks);
+    
+        res.json({ tasks });
+        console.log(res);
+      } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    });
+    
 
     // Start the server
     const port = process.env.PORT || 1337;
